@@ -513,9 +513,12 @@
         .puzzle-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
+            gap: 2px;
             margin: 20px auto;
             max-width: 300px;
+            background-color: #e6f2ff;
+            padding: 5px;
+            border-radius: 10px;
         }
 
         .puzzle-piece {
@@ -527,8 +530,8 @@
         }
 
         .puzzle-piece:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transform: scale(1.02);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .puzzle-piece.empty {
@@ -543,10 +546,65 @@
             justify-content: center;
             height: 100%;
         }
+
+        /* Efek hujan Snoopy */
+        .snoopy-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .snoopy-drop {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Snoopy_Peanuts.png/200px-Snoopy_Peanuts.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0;
+            animation: snoopyRain 3s linear forwards;
+        }
+
+        @keyframes snoopyRain {
+            0% {
+                opacity: 0.8;
+                transform: translateY(-100px) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Tombol hujan Snoopy */
+        .rain-button {
+            background: linear-gradient(135deg, #89cff0, #5d8aa8);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-family: 'Chewy', cursive;
+            font-size: 1.3rem;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .rain-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+        }
     </style>
 </head>
 <body>
     <div class="floating-hearts" id="floating-hearts"></div>
+    <div class="snoopy-rain" id="snoopy-rain"></div>
     
     <div class="decorations">
         <!-- Different Snoopy character images -->
@@ -577,6 +635,10 @@
                     <p>hope you like it.</p>
                     <p>Hope you like it! <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Snoopy_Peanuts.png/200px-Snoopy_Peanuts.png" alt="Snoopy" class="snoopy-small"></p>
                     
+                    <button class="rain-button" onclick="createSnoopyRain(20)">
+                        <i class="fas fa-cloud-rain"></i> Klik untuk Hujan Snoopy!
+                    </button>
+                    
                     <div class="envelope" onclick="showLetterForm()"></div>
                     <p>Klik amplop untuk menulis surat!</p>
                 </div>
@@ -586,7 +648,12 @@
         <!-- Game Page -->
         <div class="page" id="game-page">
             <div class="content-box">
-                <h2 class="game-title-screen">Pilih Game Lucu</h2>
+                <h2 class="game-title-screen">choose the game, rain</h2>
+                
+                <button class="rain-button" onclick="createSnoopyRain(15)">
+                    <i class="fas fa-cloud-rain"></i> Hujan Snoopy!
+                </button>
+                
                 <div class="game-container">
                     <div class="game-card" data-game="match">
                         <div class="game-icon">🎴</div>
@@ -605,6 +672,9 @@
                 <!-- Match Game -->
                 <div class="game-screen" id="match-game">
                     <h3 class="game-title-screen">Match the Emoji</h3>
+                    <button class="rain-button" onclick="createSnoopyRain(10)">
+                        <i class="fas fa-cloud-rain"></i> Hujan Snoopy!
+                    </button>
                     <div class="game-stats">
                         <div>Moves: <span id="move-count">0</span></div>
                         <div>Matches: <span id="match-count">0</span>/8</div>
@@ -621,6 +691,9 @@
                 <!-- Memory Game -->
                 <div class="game-screen" id="memory-game">
                     <h3 class="game-title-screen">Memory Game</h3>
+                    <button class="rain-button" onclick="createSnoopyRain(10)">
+                        <i class="fas fa-cloud-rain"></i> wkakkaa
+                    </button>
                     <p>Ingat urutan foto rain!</p>
                     <div id="memory-sequence" style="margin: 20px 0; font-size: 2rem;"></div>
                     <button id="start-memory" class="submit-btn">Mulai Game</button>
@@ -633,8 +706,12 @@
                 <!-- Puzzle Game -->
                 <div class="game-screen" id="puzzle-game">
                     <h3 class="game-title-screen">mini puzzle</h3>
-                    <p>Urutkan potongan gambar</p>
+                    <button class="rain-button" onclick="createSnoopyRain(10)">
+                        <i class="fas fa-cloud-rain"></i> Hujan Snoopy!
+                    </button>
+                    <p>Urutkan potongan gambar dengan menggeser ke kotak kosong</p>
                     <div id="puzzle-container" style="margin: 20px auto; max-width: 300px;"></div>
+                    <div id="puzzle-message" class="match-message"></div>
                     <button class="back-button" data-back="game">
                         <span>←</span> Kembali ke Game
                     </button>
@@ -647,6 +724,10 @@
             <div class="content-box">
                 <h2>write a letter for rain</h2>
                 
+                <button class="rain-button" onclick="createSnoopyRain(15)">
+                    <i class="fas fa-cloud-rain"></i> Hujan Snoopy!
+                </button>
+                
                 <form class="letter-form" id="letter-form">
                     <div class="form-group">
                         <label class="form-label">Judul Surat</label>
@@ -655,7 +736,7 @@
                     
                     <div class="form-group">
                         <label class="form-label">Isi Surat</label>
-                        <textarea class="form-textarea" id="letter-content" placeholder="Tulis surat spesial untuk Kaka Emal..." required></textarea>
+                        <textarea class="form-textarea" id="letter-content" placeholder="write a letter for rain...." required></textarea>
                     </div>
                     
                     <button type="submit" class="submit-btn">
@@ -748,6 +829,37 @@
             }
         }
 
+        // Hujan Snoopy Animation
+        function createSnoopyRain(count) {
+            const container = document.getElementById('snoopy-rain');
+            
+            for (let i = 0; i < count; i++) {
+                const snoopy = document.createElement('div');
+                snoopy.className = 'snoopy-drop';
+                
+                // Random position
+                snoopy.style.left = Math.random() * 100 + 'vw';
+                
+                // Random size
+                const size = Math.random() * 30 + 30;
+                snoopy.style.width = size + 'px';
+                snoopy.style.height = size + 'px';
+                
+                // Random animation duration
+                snoopy.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                
+                // Random delay
+                snoopy.style.animationDelay = (Math.random() * 2) + 's';
+                
+                container.appendChild(snoopy);
+                
+                // Remove snoopy after animation completes
+                setTimeout(() => {
+                    snoopy.remove();
+                }, 5000);
+            }
+        }
+
         // Letter Form Submission
         const letterForm = document.getElementById('letter-form');
         const letterList = document.getElementById('letter-list');
@@ -798,6 +910,9 @@
             
             // Create floating hearts
             createFloatingHearts(10);
+            
+            // Create hujan Snoopy
+            createSnoopyRain(15);
         });
         
         function saveLetter(letter) {
@@ -952,6 +1067,7 @@
                 if (matches === 8) {
                     document.getElementById('match-message').textContent = 'Selamat! Kamu menang! 🏆';
                     createFloatingHearts(15);
+                    createSnoopyRain(20);
                 }
             } else {
                 unflipCards();
@@ -1070,6 +1186,7 @@
                     memoryLevel++;
                     generateMemorySequence();
                     createFloatingHearts(5);
+                    createSnoopyRain(10);
                 } else {
                     alert('Urutan salah! Coba lagi.');
                     startMemoryGame();
@@ -1078,65 +1195,144 @@
         }
 
         // Puzzle Game
+        let puzzlePieces = [];
+        let emptyIndex = 8; // Index of empty piece (bottom right corner)
+        let moveCount = 0;
+
         function initPuzzleGame() {
             const puzzleContainer = document.getElementById('puzzle-container');
             puzzleContainer.innerHTML = '';
             puzzleContainer.className = 'puzzle-container';
             
-            // Create a 3x3 puzzle
-            const puzzlePieces = 9;
-            const pieces = [];
+            // Reset game stats
+            moveCount = 0;
+            document.getElementById('puzzle-message').textContent = '';
             
-            for (let i = 0; i < puzzlePieces; i++) {
+            // Create a 3x3 puzzle
+            puzzlePieces = [];
+            
+            for (let i = 0; i < 9; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'puzzle-piece';
                 piece.setAttribute('data-index', i);
                 
-                // Calculate background position for each piece
-                const row = Math.floor(i / 3);
-                const col = i % 3;
-                piece.style.backgroundImage = 'url("puzzle.jpg")';
-                piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+                if (i === 8) {
+                    // Last piece is empty
+                    piece.classList.add('empty');
+                    piece.textContent = '';
+                } else {
+                    // Calculate background position for each piece
+                    const row = Math.floor(i / 3);
+                    const col = i % 3;
+                    piece.style.backgroundImage = 'url("puzzle.jpg")';
+                    piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
+                    piece.textContent = i + 1;
+                    piece.style.display = 'flex';
+                    piece.style.alignItems = 'center';
+                    piece.style.justifyContent = 'center';
+                    piece.style.color = 'white';
+                    piece.style.fontSize = '1.5rem';
+                    piece.style.textShadow = '1px 1px 2px rgba(0,0,0,0.5)';
+                }
                 
                 piece.addEventListener('click', () => {
                     movePuzzlePiece(i);
                 });
                 
                 puzzleContainer.appendChild(piece);
-                pieces.push(piece);
+                puzzlePieces.push(piece);
             }
             
             // Shuffle the puzzle
-            shufflePuzzle(pieces);
+            shufflePuzzle();
         }
         
-        function shufflePuzzle(pieces) {
-            // Simple shuffle by swapping pieces
+        function shufflePuzzle() {
+            // Perform random valid moves to shuffle
             for (let i = 0; i < 100; i++) {
-                const randomIndex1 = Math.floor(Math.random() * pieces.length);
-                const randomIndex2 = Math.floor(Math.random() * pieces.length);
+                const adjacentPieces = getAdjacentPieces(emptyIndex);
+                const randomIndex = Math.floor(Math.random() * adjacentPieces.length);
+                const pieceToMove = adjacentPieces[randomIndex];
                 
-                // Swap background positions
-                const tempPos = pieces[randomIndex1].style.backgroundPosition;
-                pieces[randomIndex1].style.backgroundPosition = pieces[randomIndex2].style.backgroundPosition;
-                pieces[randomIndex2].style.backgroundPosition = tempPos;
+                // Swap positions
+                swapPieces(pieceToMove, emptyIndex);
+                emptyIndex = pieceToMove;
             }
+        }
+        
+        function getAdjacentPieces(index) {
+            const adjacent = [];
+            const row = Math.floor(index / 3);
+            const col = index % 3;
+            
+            // Check all four directions
+            if (row > 0) adjacent.push(index - 3); // Up
+            if (row < 2) adjacent.push(index + 3); // Down
+            if (col > 0) adjacent.push(index - 1); // Left
+            if (col < 2) adjacent.push(index + 1); // Right
+            
+            return adjacent;
         }
         
         function movePuzzlePiece(index) {
-            // Simple puzzle interaction - just for demonstration
-            const piece = document.querySelector(`.puzzle-piece[data-index="${index}"]`);
-            piece.style.border = '2px solid #ff6b9d';
+            // Check if the clicked piece is adjacent to the empty space
+            const adjacentPieces = getAdjacentPieces(emptyIndex);
             
-            setTimeout(() => {
-                piece.style.border = '1px solid #b8d8f0';
-            }, 500);
-            
-            // Check if puzzle is solved (simplified)
-            if (Math.random() > 0.7) {
-                document.getElementById('match-message').textContent = 'Selamat! Puzzle selesai! 🎉';
-                createFloatingHearts(10);
+            if (adjacentPieces.includes(index)) {
+                // Valid move - swap pieces
+                swapPieces(index, emptyIndex);
+                emptyIndex = index;
+                moveCount++;
+                
+                // Check if puzzle is solved
+                if (isPuzzleSolved()) {
+                    document.getElementById('puzzle-message').textContent = `Selamat! Puzzle selesai dalam ${moveCount} langkah! 🎉`;
+                    createFloatingHearts(10);
+                    createSnoopyRain(15);
+                }
             }
+        }
+        
+        function swapPieces(index1, index2) {
+            const piece1 = puzzlePieces[index1];
+            const piece2 = puzzlePieces[index2];
+            
+            // Swap background positions
+            const tempBg = piece1.style.backgroundPosition;
+            piece1.style.backgroundPosition = piece2.style.backgroundPosition;
+            piece2.style.backgroundPosition = tempBg;
+            
+            // Swap text content
+            const tempText = piece1.textContent;
+            piece1.textContent = piece2.textContent;
+            piece2.textContent = tempText;
+            
+            // Swap empty class
+            if (piece1.classList.contains('empty')) {
+                piece1.classList.remove('empty');
+                piece2.classList.add('empty');
+                piece1.style.backgroundImage = piece2.style.backgroundImage;
+                piece2.style.backgroundImage = 'none';
+            } else if (piece2.classList.contains('empty')) {
+                piece2.classList.remove('empty');
+                piece1.classList.add('empty');
+                piece2.style.backgroundImage = piece1.style.backgroundImage;
+                piece1.style.backgroundImage = 'none';
+            }
+        }
+        
+        function isPuzzleSolved() {
+            for (let i = 0; i < 8; i++) {
+                const piece = puzzlePieces[i];
+                const correctRow = Math.floor(i / 3);
+                const correctCol = i % 3;
+                const correctPosition = `-${correctCol * 100}px -${correctRow * 100}px`;
+                
+                if (piece.style.backgroundPosition !== correctPosition) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         // Create initial floating hearts
@@ -1145,4 +1341,4 @@
         }, 3000);
     </script>
 </body>
-    </html>
+            </html>
